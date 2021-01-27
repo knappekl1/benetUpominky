@@ -6,7 +6,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>2154,1187.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>2154,1283.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ClassifyEmail_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="24">
@@ -56,19 +56,20 @@
       <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Classify Email" sap:VirtualizedContainerService.HintSize="1396,1116.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Classify Email" sap:VirtualizedContainerService.HintSize="1396,1218.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
-      <Variable x:TypeArguments="x:String" Name="SubjectString" />
+      <Variable x:TypeArguments="x:String" Name="FinalString" />
       <Variable x:TypeArguments="x:String" Name="BodyString" />
       <Variable x:TypeArguments="x:String" Name="Classified" />
       <Variable x:TypeArguments="x:Int32" Name="NumberOfMatches" />
+      <Variable x:TypeArguments="x:String" Name="SubjectString" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <Assign DisplayName="Assign Subject String" sap:VirtualizedContainerService.HintSize="1354,62" sap2010:WorkflowViewState.IdRef="Assign_1">
+    <Assign DisplayName="Assign Subjct String" sap:VirtualizedContainerService.HintSize="1354,62" sap2010:WorkflowViewState.IdRef="Assign_11">
       <Assign.To>
         <OutArgument x:TypeArguments="x:String">[SubjectString]</OutArgument>
       </Assign.To>
@@ -84,7 +85,15 @@
         <InArgument x:TypeArguments="x:String">[in_Message.Body]</InArgument>
       </Assign.Value>
     </Assign>
-    <If Condition="[system.text.RegularExpressions.Regex.IsMatch(SubjectString.ToLower, &quot;(upomín)&quot;) Or system.text.RegularExpressions.Regex.IsMatch(SubjectString.ToLower, &quot;(upomin)&quot;)]" DisplayName="If CZ Reminder" sap:VirtualizedContainerService.HintSize="1354,718" sap2010:WorkflowViewState.IdRef="If_1">
+    <Assign DisplayName="Concatenate Subject + Body" sap:VirtualizedContainerService.HintSize="1354,62" sap2010:WorkflowViewState.IdRef="Assign_1">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[FinalString]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">[SubjectString &amp; " " &amp; BodyString]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <If Condition="[system.text.RegularExpressions.Regex.IsMatch(FinalString.ToLower, &quot;(upomín)&quot;) Or system.text.RegularExpressions.Regex.IsMatch(FinalString.ToLower, &quot;(upomin)&quot;)]" DisplayName="If CZ Reminder" sap:VirtualizedContainerService.HintSize="1354,718" sap2010:WorkflowViewState.IdRef="If_1">
       <If.Then>
         <Sequence DisplayName="Assign results" sap:VirtualizedContainerService.HintSize="304,256" sap2010:WorkflowViewState.IdRef="Sequence_2">
           <sap:WorkflowViewStateService.ViewState>
@@ -105,13 +114,13 @@
               <OutArgument x:TypeArguments="x:Int32">[NumberOfMatches]</OutArgument>
             </Assign.To>
             <Assign.Value>
-              <InArgument x:TypeArguments="x:Int32">[system.text.RegularExpressions.Regex.Matches(SubjectString.ToLower, "(upomín)").Count]</InArgument>
+              <InArgument x:TypeArguments="x:Int32">[system.text.RegularExpressions.Regex.Matches(FinalString.ToLower, "(upomín)").Count]</InArgument>
             </Assign.Value>
           </Assign>
         </Sequence>
       </If.Then>
       <If.Else>
-        <If Condition="[system.text.RegularExpressions.Regex.IsMatch(SubjectString.ToLower, &quot;(mahnung)&quot;)]" DisplayName="If DE Reminder" sap:VirtualizedContainerService.HintSize="1004,564" sap2010:WorkflowViewState.IdRef="If_2">
+        <If Condition="[system.text.RegularExpressions.Regex.IsMatch(FinalString.ToLower, &quot;(mahnung)&quot;)]" DisplayName="If DE Reminder" sap:VirtualizedContainerService.HintSize="1004,564" sap2010:WorkflowViewState.IdRef="If_2">
           <If.Then>
             <Sequence DisplayName="Assign results" sap:VirtualizedContainerService.HintSize="304,256" sap2010:WorkflowViewState.IdRef="Sequence_3">
               <Sequence.Variables>
@@ -135,13 +144,13 @@
                   <OutArgument x:TypeArguments="x:Int32">[NumberOfMatches]</OutArgument>
                 </Assign.To>
                 <Assign.Value>
-                  <InArgument x:TypeArguments="x:Int32">[system.text.RegularExpressions.Regex.Matches(SubjectString.ToLower, "(mahnung)").Count]</InArgument>
+                  <InArgument x:TypeArguments="x:Int32">[system.text.RegularExpressions.Regex.Matches(FinalString.ToLower, "(mahnung)").Count]</InArgument>
                 </Assign.Value>
               </Assign>
             </Sequence>
           </If.Then>
           <If.Else>
-            <If Condition="[system.text.RegularExpressions.Regex.IsMatch(SubjectString.ToLower, &quot;(Collection letter)&quot;)]" DisplayName="If EN reminder" sap:VirtualizedContainerService.HintSize="654,410" sap2010:WorkflowViewState.IdRef="If_3">
+            <If Condition="[system.text.RegularExpressions.Regex.IsMatch(FinalString.ToLower, &quot;(Collection letter)&quot;)]" DisplayName="If EN reminder" sap:VirtualizedContainerService.HintSize="654,410" sap2010:WorkflowViewState.IdRef="If_3">
               <If.Then>
                 <Sequence DisplayName="Assign results" sap:VirtualizedContainerService.HintSize="304,256" sap2010:WorkflowViewState.IdRef="Sequence_4">
                   <Sequence.Variables>
@@ -165,7 +174,7 @@
                       <OutArgument x:TypeArguments="x:Int32">[NumberOfMatches]</OutArgument>
                     </Assign.To>
                     <Assign.Value>
-                      <InArgument x:TypeArguments="x:Int32">[system.text.RegularExpressions.Regex.Matches(SubjectString.ToLower, "(Collection letter)").Count]</InArgument>
+                      <InArgument x:TypeArguments="x:Int32">[system.text.RegularExpressions.Regex.Matches(FinalString.ToLower, "(Collection letter)").Count]</InArgument>
                     </Assign.Value>
                   </Assign>
                 </Sequence>

@@ -3611,9 +3611,9 @@
     "restore": {
       "projectUniqueName": "MovePaymentReminders",
       "projectName": "MovePaymentReminders",
-      "projectPath": "C:\\Users\\libor\\Dropbox\\RPA\\UI path\\Projects\\MovePaymentReminders\\.local",
+      "projectPath": "C:\\Users\\libor\\Dropbox\\LK_docs\\Valuetools\\Zákazníci\\Benet Automotive\\Demo Move Emails\\MovePaymentReminders\\.local",
       "packagesPath": "C:\\Users\\libor\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\libor\\Dropbox\\RPA\\UI path\\Projects\\MovePaymentReminders\\.local"
+      "outputPath": "C:\\Users\\libor\\Dropbox\\LK_docs\\Valuetools\\Zákazníci\\Benet Automotive\\Demo Move Emails\\MovePaymentReminders\\.local"
     },
     "frameworks": {
       "net461": {
@@ -3641,14 +3641,5 @@
         }
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU3034",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'PowerShellStandard.Library 5.1.0' from source 'https://www.myget.org/F/workflow/': This package is signed but not by a trusted signer.",
-      "libraryId": "PowerShellStandard.Library"
-    }
-  ]
+  }
 }
