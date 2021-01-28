@@ -5,6 +5,8 @@
     <x:Property Name="in_TransactionID" Type="InArgument(x:String)" />
     <x:Property Name="in_TransactionField1" Type="InArgument(x:String)" />
     <x:Property Name="in_TransactionField2" Type="InArgument(x:String)" />
+    <x:Property Name="in_Mailbox" Type="InArgument(x:String)" />
+    <x:Property Name="in_Password" Type="InArgument(x:String)" />
   </x:Members>
   <mva:VisualBasic.Settings>
     <x:Null />
@@ -66,11 +68,11 @@
       <AssemblyReference>System.Memory</AssemblyReference>
       <AssemblyReference>UiPath.Mail</AssemblyReference>
       <AssemblyReference>Microsoft.Bcl.AsyncInterfaces</AssemblyReference>
-      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
       <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Invoke major steps of the business process, which are usually implemented by multiple subworkflows.&#xA;&#xA;If a BusinessRuleException is thrown, the transaction is skipped. &#xA;If another kind of exception occurs, the current transaction can be retried. " DisplayName="Process" sap:VirtualizedContainerService.HintSize="526,760" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Invoke major steps of the business process, which are usually implemented by multiple subworkflows.&#xA;&#xA;If a BusinessRuleException is thrown, the transaction is skipped. &#xA;If another kind of exception occurs, the current transaction can be retried. " DisplayName="Process" sap:VirtualizedContainerService.HintSize="526,814" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="snm:MailMessage" Name="MailMessage" />
       <Variable x:TypeArguments="x:String" Name="Classification" />
@@ -92,14 +94,32 @@
     <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="484,62.6666666666667" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[in_TransactionID &amp; &quot; &quot; &amp; in_TransactionField1 &amp; &quot;, &quot; &amp; in_TransactionField2]" />
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ClassifyEmail workflow" sap:VirtualizedContainerService.HintSize="484,114" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Components\ClassifyEmail.xaml">
       <ui:InvokeWorkflowFile.Arguments>
-        <InArgument x:TypeArguments="snm:MailMessage" x:Key="in_Message">
-          <mva:VisualBasicValue x:TypeArguments="snm:MailMessage" ExpressionText="MailMessage" />
-        </InArgument>
-        <OutArgument x:TypeArguments="x:String" x:Key="out_Classification">
-          <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="Classification" />
-        </OutArgument>
+        <InArgument x:TypeArguments="snm:MailMessage" x:Key="in_Message">[MailMessage]</InArgument>
+        <OutArgument x:TypeArguments="x:String" x:Key="out_Classification">[Classification]</OutArgument>
       </ui:InvokeWorkflowFile.Arguments>
     </ui:InvokeWorkflowFile>
-    <If Condition="[Not Classification.Equals(string.empty)]" DisplayName="If any classification" sap:VirtualizedContainerService.HintSize="484,214" sap2010:WorkflowViewState.IdRef="If_1" />
+    <If Condition="[Not Classification.Equals(string.empty)]" DisplayName="If any classification" sap:VirtualizedContainerService.HintSize="484,268" sap2010:WorkflowViewState.IdRef="If_1">
+      <If.Then>
+        <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MoveEmail workflow" sap:VirtualizedContainerService.HintSize="334,114" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Components\MoveEmail.xaml">
+          <ui:InvokeWorkflowFile.Arguments>
+            <InArgument x:TypeArguments="snm:MailMessage" x:Key="in_Message">
+              <mva:VisualBasicValue x:TypeArguments="snm:MailMessage" ExpressionText="MailMessage" />
+            </InArgument>
+            <OutArgument x:TypeArguments="x:String" x:Key="out_Status">
+              <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="Classification" />
+            </OutArgument>
+            <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="in_Config">
+              <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, x:Object)" ExpressionText="in_Config" />
+            </InArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="in_Mailbox">
+              <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Mailbox" />
+            </InArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="in_Password">
+              <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Password" />
+            </InArgument>
+          </ui:InvokeWorkflowFile.Arguments>
+        </ui:InvokeWorkflowFile>
+      </If.Then>
+    </If>
   </Sequence>
 </Activity>
