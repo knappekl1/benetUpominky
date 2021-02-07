@@ -42,7 +42,7 @@
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="27">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="54">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -69,10 +69,11 @@
       <AssemblyReference>UiPath.Mail</AssemblyReference>
       <AssemblyReference>Microsoft.Bcl.AsyncInterfaces</AssemblyReference>
       <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
       <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence sap2010:Annotation.AnnotationText="Invoke major steps of the business process, which are usually implemented by multiple subworkflows.&#xA;&#xA;If a BusinessRuleException is thrown, the transaction is skipped. &#xA;If another kind of exception occurs, the current transaction can be retried. " DisplayName="Process" sap:VirtualizedContainerService.HintSize="526,814" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence sap2010:Annotation.AnnotationText="Invoke major steps of the business process, which are usually implemented by multiple subworkflows.&#xA;&#xA;If a BusinessRuleException is thrown, the transaction is skipped. &#xA;If another kind of exception occurs, the current transaction can be retried. " DisplayName="Process" sap:VirtualizedContainerService.HintSize="526,846" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="snm:MailMessage" Name="MailMessage" />
       <Variable x:TypeArguments="x:String" Name="Classification" />
@@ -91,7 +92,7 @@
         <InArgument x:TypeArguments="snm:MailMessage">[in_TransactionItem]</InArgument>
       </Assign.Value>
     </Assign>
-    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="484,62.6666666666667" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[in_TransactionID &amp; &quot; &quot; &amp; in_TransactionField1 &amp; &quot;, &quot; &amp; in_TransactionField2]" />
+    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="484,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Processing timestamp: &quot; &amp; in_TransactionID &amp; &quot;; Email date/from: &quot; &amp; in_TransactionField1 &amp; &quot;; Email subject: &quot; &amp; in_TransactionField2]" />
     <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke ClassifyEmail workflow" sap:VirtualizedContainerService.HintSize="484,114" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="Components\ClassifyEmail.xaml">
       <ui:InvokeWorkflowFile.Arguments>
         <InArgument x:TypeArguments="snm:MailMessage" x:Key="in_Message">[MailMessage]</InArgument>
@@ -102,21 +103,11 @@
       <If.Then>
         <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke MoveEmail workflow" sap:VirtualizedContainerService.HintSize="334,114" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="Components\MoveEmail.xaml">
           <ui:InvokeWorkflowFile.Arguments>
-            <InArgument x:TypeArguments="snm:MailMessage" x:Key="in_Message">
-              <mva:VisualBasicValue x:TypeArguments="snm:MailMessage" ExpressionText="MailMessage" />
-            </InArgument>
-            <OutArgument x:TypeArguments="x:String" x:Key="out_Status">
-              <mva:VisualBasicReference x:TypeArguments="x:String" ExpressionText="Classification" />
-            </OutArgument>
-            <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="in_Config">
-              <mva:VisualBasicValue x:TypeArguments="scg:Dictionary(x:String, x:Object)" ExpressionText="in_Config" />
-            </InArgument>
-            <InArgument x:TypeArguments="x:String" x:Key="in_Mailbox">
-              <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Mailbox" />
-            </InArgument>
-            <InArgument x:TypeArguments="x:String" x:Key="in_Password">
-              <mva:VisualBasicValue x:TypeArguments="x:String" ExpressionText="in_Password" />
-            </InArgument>
+            <InArgument x:TypeArguments="snm:MailMessage" x:Key="in_Message">[MailMessage]</InArgument>
+            <OutArgument x:TypeArguments="x:String" x:Key="out_Status">[Classification]</OutArgument>
+            <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)" x:Key="in_Config">[in_Config]</InArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="in_Mailbox">[in_Mailbox]</InArgument>
+            <InArgument x:TypeArguments="x:String" x:Key="in_Password">[in_Password]</InArgument>
           </ui:InvokeWorkflowFile.Arguments>
         </ui:InvokeWorkflowFile>
       </If.Then>

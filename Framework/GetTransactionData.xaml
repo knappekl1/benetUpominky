@@ -136,7 +136,7 @@
               <OutArgument x:TypeArguments="x:String">[out_TransactionField2]</OutArgument>
             </Assign.To>
             <Assign.Value>
-              <InArgument x:TypeArguments="x:String">[string.Empty]</InArgument>
+              <InArgument x:TypeArguments="x:String">[out_TransactionItem.Subject]</InArgument>
             </Assign.Value>
           </Assign>
         </Sequence>

@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="ClassifyEmail" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:snm="clr-namespace:System.Net.Mail;assembly=System" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="ClassifyEmail" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:snm="clr-namespace:System.Net.Mail;assembly=System" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="in_Message" Type="InArgument(snm:MailMessage)" />
     <x:Property Name="out_Classification" Type="OutArgument(x:String)" />
@@ -6,7 +6,7 @@
   <mva:VisualBasic.Settings>
     <x:Null />
   </mva:VisualBasic.Settings>
-  <sap:VirtualizedContainerService.HintSize>2154,1385.33333333333</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>2154,1469.33333333333</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ClassifyEmail_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="24">
@@ -37,7 +37,7 @@
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
-    <scg:List x:TypeArguments="AssemblyReference" Capacity="32">
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="50">
       <AssemblyReference>System.Activities</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
       <AssemblyReference>mscorlib</AssemblyReference>
@@ -66,7 +66,7 @@
       <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Classify Email" sap:VirtualizedContainerService.HintSize="1396,1320.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="Classify Email" sap:VirtualizedContainerService.HintSize="1396,1404.66666666667" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="FinalString" />
       <Variable x:TypeArguments="x:String" Name="BodyString" />
@@ -103,9 +103,9 @@
         <InArgument x:TypeArguments="x:String">[SubjectString &amp; " " &amp; BodyString]</InArgument>
       </Assign.Value>
     </Assign>
-    <If Condition="[system.text.RegularExpressions.Regex.IsMatch(FinalString.ToLower, &quot;(upomín)&quot;) Or system.text.RegularExpressions.Regex.IsMatch(FinalString.ToLower, &quot;(upomin)&quot;)]" DisplayName="If CZ Reminder" sap:VirtualizedContainerService.HintSize="1354,718" sap2010:WorkflowViewState.IdRef="If_1">
+    <If Condition="[system.text.RegularExpressions.Regex.IsMatch(FinalString.ToLower, &quot;upomín|upomin|(po splatnosti)&quot;)]" DisplayName="If CZ Reminder" sap:VirtualizedContainerService.HintSize="1354,616" sap2010:WorkflowViewState.IdRef="If_1">
       <If.Then>
-        <Sequence DisplayName="Assign results" sap:VirtualizedContainerService.HintSize="304,256" sap2010:WorkflowViewState.IdRef="Sequence_2">
+        <Sequence DisplayName="Assign results" sap:VirtualizedContainerService.HintSize="304,154" sap2010:WorkflowViewState.IdRef="Sequence_2">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -119,20 +119,12 @@
               <InArgument x:TypeArguments="x:String">ReminderCZ</InArgument>
             </Assign.Value>
           </Assign>
-          <Assign DisplayName="Assign Matches" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_4">
-            <Assign.To>
-              <OutArgument x:TypeArguments="x:Int32">[NumberOfMatches]</OutArgument>
-            </Assign.To>
-            <Assign.Value>
-              <InArgument x:TypeArguments="x:Int32">[system.text.RegularExpressions.Regex.Matches(FinalString.ToLower, "(upomín)").Count]</InArgument>
-            </Assign.Value>
-          </Assign>
         </Sequence>
       </If.Then>
       <If.Else>
-        <If Condition="[system.text.RegularExpressions.Regex.IsMatch(FinalString.ToLower, &quot;(mahnung)&quot;)]" DisplayName="If DE Reminder" sap:VirtualizedContainerService.HintSize="1004,564" sap2010:WorkflowViewState.IdRef="If_2">
+        <If Condition="[system.text.RegularExpressions.Regex.IsMatch(FinalString.ToLower, &quot;(mahnung)&quot;)]" DisplayName="If DE Reminder" sap:VirtualizedContainerService.HintSize="1004,462" sap2010:WorkflowViewState.IdRef="If_2">
           <If.Then>
-            <Sequence DisplayName="Assign results" sap:VirtualizedContainerService.HintSize="304,256" sap2010:WorkflowViewState.IdRef="Sequence_3">
+            <Sequence DisplayName="Assign results" sap:VirtualizedContainerService.HintSize="304,154" sap2010:WorkflowViewState.IdRef="Sequence_3">
               <Sequence.Variables>
                 <Variable x:TypeArguments="x:Int32" Name="NumberOfMatches" />
               </Sequence.Variables>
@@ -149,20 +141,12 @@
                   <InArgument x:TypeArguments="x:String">ReminderDE</InArgument>
                 </Assign.Value>
               </Assign>
-              <Assign DisplayName="Assign Matches" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_6">
-                <Assign.To>
-                  <OutArgument x:TypeArguments="x:Int32">[NumberOfMatches]</OutArgument>
-                </Assign.To>
-                <Assign.Value>
-                  <InArgument x:TypeArguments="x:Int32">[system.text.RegularExpressions.Regex.Matches(FinalString.ToLower, "(mahnung)").Count]</InArgument>
-                </Assign.Value>
-              </Assign>
             </Sequence>
           </If.Then>
           <If.Else>
-            <If Condition="[system.text.RegularExpressions.Regex.IsMatch(FinalString.ToLower, &quot;(Collection letter)&quot;)]" DisplayName="If EN reminder" sap:VirtualizedContainerService.HintSize="654,410" sap2010:WorkflowViewState.IdRef="If_3">
+            <If Condition="[system.text.RegularExpressions.Regex.IsMatch(FinalString.ToLower, &quot;((collection letter)|(payment reminder))&quot;)]" DisplayName="If EN reminder" sap:VirtualizedContainerService.HintSize="654,308" sap2010:WorkflowViewState.IdRef="If_3">
               <If.Then>
-                <Sequence DisplayName="Assign results" sap:VirtualizedContainerService.HintSize="304,256" sap2010:WorkflowViewState.IdRef="Sequence_4">
+                <Sequence DisplayName="Assign results" sap:VirtualizedContainerService.HintSize="304,154" sap2010:WorkflowViewState.IdRef="Sequence_4">
                   <Sequence.Variables>
                     <Variable x:TypeArguments="x:Int32" Name="NumberOfMatches" />
                   </Sequence.Variables>
@@ -179,18 +163,10 @@
                       <InArgument x:TypeArguments="x:String">ReminderEN</InArgument>
                     </Assign.Value>
                   </Assign>
-                  <Assign DisplayName="Assign Matches" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_9">
-                    <Assign.To>
-                      <OutArgument x:TypeArguments="x:Int32">[NumberOfMatches]</OutArgument>
-                    </Assign.To>
-                    <Assign.Value>
-                      <InArgument x:TypeArguments="x:Int32">[system.text.RegularExpressions.Regex.Matches(FinalString.ToLower, "(Collection letter)").Count]</InArgument>
-                    </Assign.Value>
-                  </Assign>
                 </Sequence>
               </If.Then>
               <If.Else>
-                <Sequence sap:VirtualizedContainerService.HintSize="304,256" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                <Sequence sap:VirtualizedContainerService.HintSize="304,154" sap2010:WorkflowViewState.IdRef="Sequence_5">
                   <sap:WorkflowViewStateService.ViewState>
                     <scg:Dictionary x:TypeArguments="x:String, x:Object">
                       <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -202,14 +178,6 @@
                     </Assign.To>
                     <Assign.Value>
                       <InArgument x:TypeArguments="x:String">[String.Empty]</InArgument>
-                    </Assign.Value>
-                  </Assign>
-                  <Assign DisplayName="Assign Matches" sap:VirtualizedContainerService.HintSize="262,62" sap2010:WorkflowViewState.IdRef="Assign_8">
-                    <Assign.To>
-                      <OutArgument x:TypeArguments="x:Int32">[NumberOfMatches]</OutArgument>
-                    </Assign.To>
-                    <Assign.Value>
-                      <InArgument x:TypeArguments="x:Int32">[0]</InArgument>
                     </Assign.Value>
                   </Assign>
                 </Sequence>
@@ -227,6 +195,13 @@
         <InArgument x:TypeArguments="x:String">[Classified]</InArgument>
       </Assign.Value>
     </Assign>
-    <WriteLine DisplayName="Write Line" sap:VirtualizedContainerService.HintSize="1354,62.6666666666667" sap2010:WorkflowViewState.IdRef="WriteLine_1" Text="[Classified &amp; &quot; &quot;  &amp; NumberOfMatches.ToString]" />
+    <If Condition="[out_Classification.Equals(String.Empty)]" DisplayName="If not classified" sap:VirtualizedContainerService.HintSize="1354,248.666666666667" sap2010:WorkflowViewState.IdRef="If_4">
+      <If.Then>
+        <ui:LogMessage DisplayName="Log Message Not classified" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Email not classified as Reminder&quot;]" />
+      </If.Then>
+      <If.Else>
+        <ui:LogMessage DisplayName="Log Message Classified" sap:VirtualizedContainerService.HintSize="334,94.6666666666667" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;Email classified as reminder: category &quot; &amp; Classified]" />
+      </If.Else>
+    </If>
   </Sequence>
 </Activity>
