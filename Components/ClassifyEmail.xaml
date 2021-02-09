@@ -103,7 +103,7 @@
         <InArgument x:TypeArguments="x:String">[SubjectString &amp; " " &amp; BodyString]</InArgument>
       </Assign.Value>
     </Assign>
-    <If Condition="[system.text.RegularExpressions.Regex.IsMatch(FinalString.ToLower, &quot;upomín|upomin|(po splatnosti)&quot;)]" DisplayName="If CZ Reminder" sap:VirtualizedContainerService.HintSize="1354,616" sap2010:WorkflowViewState.IdRef="If_1">
+    <If Condition="[system.text.RegularExpressions.Regex.IsMatch(FinalString.ToLower, &quot;upomín|upomin|(po[\s_-]+splatnosti)|(připomínka[\s]+splatnost)&quot;, RegexOptions.IgnoreCase)]" DisplayName="If CZ Reminder" sap:VirtualizedContainerService.HintSize="1354,616" sap2010:WorkflowViewState.IdRef="If_1">
       <If.Then>
         <Sequence DisplayName="Assign results" sap:VirtualizedContainerService.HintSize="304,154" sap2010:WorkflowViewState.IdRef="Sequence_2">
           <sap:WorkflowViewStateService.ViewState>
@@ -144,7 +144,7 @@
             </Sequence>
           </If.Then>
           <If.Else>
-            <If Condition="[system.text.RegularExpressions.Regex.IsMatch(FinalString.ToLower, &quot;((collection letter)|(payment reminder))&quot;)]" DisplayName="If EN reminder" sap:VirtualizedContainerService.HintSize="654,308" sap2010:WorkflowViewState.IdRef="If_3">
+            <If Condition="[system.text.RegularExpressions.Regex.IsMatch(FinalString.ToLower, &quot;((collection[\s]+letter)|(payment[\s]+reminder))&quot;)]" DisplayName="If EN reminder" sap:VirtualizedContainerService.HintSize="654,308" sap2010:WorkflowViewState.IdRef="If_3">
               <If.Then>
                 <Sequence DisplayName="Assign results" sap:VirtualizedContainerService.HintSize="304,154" sap2010:WorkflowViewState.IdRef="Sequence_4">
                   <Sequence.Variables>
